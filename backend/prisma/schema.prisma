@@ -9,11 +9,11 @@ datasource db {
 
 model User {
     id        Int       @id @default(autoincrement())
-    name      String    @unique
+    name      String
     email     String    @unique
     password  String
     createdAt DateTime  @default(now())
-    updatedAt DateTime?
+    updatedAt DateTime? @updatedAt
     deletedAt DateTime?
 }
 
@@ -26,9 +26,11 @@ model Material {
     unitOfMeasure    UnitsOfMeasure @relation(fields: [unitsOfMeasureId], references: [id])
     categoryId       Int
     category         Category       @relation(fields: [categoryId], references: [id])
+    brandId          Int
+    brand            Brand          @relation(fields: [brandId], references: [id])
     isActive         Boolean        @default(true)
     createdAt        DateTime       @default(now())
-    updatedAt        DateTime?
+    updatedAt        DateTime?      @updatedAt
     deletedAt        DateTime?
 }
 
@@ -46,4 +48,18 @@ model Category {
     parent    Category?  @relation("ParentChild", fields: [parentId], references: [id])
     children  Category[] @relation("ParentChild")
     materials Material[]
+    createdAt DateTime   @default(now())
+    updatedAt DateTime?  @updatedAt
+    deletedAt DateTime?
+}
+
+model Brand {
+    id          Int        @id @default(autoincrement())
+    name        String     @unique
+    description String?
+    logoURL     String
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime?  @updatedAt
+    deletedAt   DateTime?
+    materials   Material[]
 }

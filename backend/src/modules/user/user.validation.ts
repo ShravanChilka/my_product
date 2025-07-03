@@ -1,6 +1,6 @@
 import z from "zod";
 
-export class UserValidation {
+export default class UserValidation {
   static create = z.object({
     name: z.string().trim().min(3).max(50),
     email: z.string().trim().email("Invalid email address"),

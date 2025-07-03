@@ -3,8 +3,14 @@ import prisma from "../../core/prisma_client";
 import { UserCreate, UserGetByEmailPassword } from "./user.validation";
 import bcrypt from "bcrypt";
 
-class UserService {
-  async createUser(data: UserCreate) {
+@injectable()
+export default class UserService {
+  createUser = async (data: UserCreate) => {
+    const user = await prisma.user.findFirst({
+      where: { email: data.email },
+    });
+    if (user) throw new Error("User with same email already exists");
+
     const password = await bcrypt.hash(data.password, 10);
     const result = await prisma.user.create({
       data: { ...data, password },
@@ -14,9 +20,9 @@ class UserService {
       name: result.name,
       email: result.email,
     };
-  }
+  };
 
-  async getUserByEmailPassword(data: UserGetByEmailPassword) {
+  getUserByEmailPassword = async (data: UserGetByEmailPassword) => {
     const user = await prisma.user.findFirst({
       where: { email: data.email },
     });
@@ -30,7 +36,5 @@ class UserService {
       name: user.name,
       email: user.email,
     };
-  }
+  };
 }
-
-export default UserService;

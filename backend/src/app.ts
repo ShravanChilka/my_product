@@ -1,11 +1,12 @@
-import express, { Application, Router } from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import UserService from "./modules/user/user.service";
 import AuthRoutes from "./modules/auth/auth.routes";
-import AuthController from "./modules/auth/auth.controller";
-import AuthService from "./modules/auth/auth.service";
+import { handleError } from "./middlewares/error.middleware";
+import { container } from "tsyringe";
+import BrandRoutes from "./modules/brand/brand.routes";
+import CategoryRoutes from "./modules/category/category.routes";
 
 class App {
   private application: Application;
@@ -15,6 +16,7 @@ class App {
 
     this.initMiddlewares();
     this.initRoutes();
+    this.handleError();
   }
 
   private initMiddlewares() {
@@ -26,11 +28,16 @@ class App {
   }
 
   private initRoutes() {
-    const authRoutes = new AuthRoutes(
-      new AuthController(new AuthService(new UserService())),
-      Router()
+    this.application.use("/api", container.resolve(AuthRoutes).router);
+    this.application.use("/api/brand", container.resolve(BrandRoutes).router);
+    this.application.use(
+      "/api/category",
+      container.resolve(CategoryRoutes).router
     );
-    this.application.use("/api", authRoutes.router);
+  }
+
+  private handleError() {
+    this.application.use(handleError);
   }
 
   public listen(port: number): void {

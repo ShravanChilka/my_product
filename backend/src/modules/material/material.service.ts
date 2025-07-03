@@ -1,1 +1,1 @@
-class MaterialService {}
+export default class MaterialService {}

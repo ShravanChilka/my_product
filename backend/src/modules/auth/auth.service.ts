@@ -1,17 +1,17 @@
-import UserService from "../user/user.service";
 import { inject, injectable } from "tsyringe";
-import { AuthLogin, AuthRegister } from "./auth.validation";
+import UserService from "../user/user.service";
+import { AuthLoginBody, AuthRegisterBody } from "./auth.validation";
 import jwt from "jsonwebtoken";
 
-class AuthService {
+@injectable()
+export default class AuthService {
   private service: UserService;
 
-  constructor(service: UserService) {
-    console.log(service);
+  constructor(@inject(UserService) service: UserService) {
     this.service = service;
   }
 
-  async login(data: AuthLogin) {
+  login = async (data: AuthLoginBody) => {
     const user = await this.service.getUserByEmailPassword(data);
     const token = jwt.sign(data, process.env.JWT_SECRET ?? "", {
       expiresIn: "1d",
@@ -20,12 +20,10 @@ class AuthService {
       token,
       user,
     };
-  }
+  };
 
-  async register(data: AuthRegister) {
+  register = async (data: AuthRegisterBody) => {
     const user = await this.service.createUser(data);
     return user;
-  }
+  };
 }
-
-export default AuthService;
