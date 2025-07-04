@@ -28,6 +28,8 @@ export default class MaterialValidation {
     brand: z.union([z.literal("true"), z.literal("false")]).optional(),
     category: z.union([z.literal("true"), z.literal("false")]).optional(),
     unitOfMeasure: z.union([z.literal("true"), z.literal("false")]).optional(),
+    brandId: z.coerce.number().positive().optional(),
+    categoryId: z.coerce.number().positive().optional(),
   });
 
   static getByIdParam = z.object({
@@ -37,6 +39,7 @@ export default class MaterialValidation {
   static generateSku = z.object({
     materialName: z.string().trim().min(3).max(100),
     categoryName: z.string().trim().min(3).max(100),
+    materialId: z.number().int().positive(),
   });
 }
 

@@ -1,6 +1,6 @@
 import { prisma } from "../seed";
 
-class CategorySeed {
+export default class MaterialCategorySeed {
   seed = async () => {
     const categories = [
       { id: 1, name: "Ingredients", parentId: null },
@@ -20,14 +20,12 @@ class CategorySeed {
 
     for (const category of categories) {
       const { id, ...data } = category;
-      await prisma.category.upsert({
+      await prisma.materialCategory.upsert({
         where: { id: category.id },
         create: data,
         update: data,
       });
     }
-    console.log(`Inserted ${categories.length} categories`);
+    console.log(`Inserted ${categories.length} material categories`);
   };
 }
-
-export default CategorySeed;

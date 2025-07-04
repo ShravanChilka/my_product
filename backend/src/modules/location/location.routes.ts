@@ -1,16 +1,16 @@
+import { Router } from "express";
 import { inject, injectable } from "tsyringe";
 import BaseRoute from "../../base/base.route";
-import { Router } from "express";
-import CategoryController from "./category.controller";
+import LocationController from "./location.controller";
 import { validateRequest } from "../../middlewares/validation.middleware";
-import CategoryValidation from "./category.validation";
+import LocationValidation from "./location.validation";
 
 @injectable()
-export default class CategoryRoutes implements BaseRoute {
+export default class LocationRoutes implements BaseRoute {
   public router: Router;
-  private controller: CategoryController;
+  private controller: LocationController;
 
-  constructor(@inject(CategoryController) controller: CategoryController) {
+  constructor(@inject(LocationController) controller: LocationController) {
     this.router = Router();
     this.controller = controller;
     this.createRoutes();
@@ -20,34 +20,34 @@ export default class CategoryRoutes implements BaseRoute {
     this.router.post(
       "/",
       validateRequest({
-        body: CategoryValidation.createBody,
+        body: LocationValidation.createBody,
       }),
       this.controller.create
     );
     this.router.patch(
       "/:id",
       validateRequest({
-        params: CategoryValidation.updateParam,
-        body: CategoryValidation.updateBody,
+        params: LocationValidation.updateParam,
+        body: LocationValidation.updateBody,
       }),
       this.controller.update
     );
     this.router.put(
       "/:id",
       validateRequest({
-        params: CategoryValidation.updateParam,
-        body: CategoryValidation.updateBody,
+        params: LocationValidation.updateParam,
+        body: LocationValidation.updateBody,
       }),
       this.controller.update
     );
     this.router.get(
       "/:id",
-      validateRequest({ params: CategoryValidation.getByIdParam }),
+      validateRequest({ params: LocationValidation.getByIdParam }),
       this.controller.getById
     );
     this.router.get(
       "/",
-      validateRequest({ query: CategoryValidation.getQuery }),
+      validateRequest({ query: LocationValidation.getQuery }),
       this.controller.get
     );
   }

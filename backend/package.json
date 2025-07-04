@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "npx tsc && node dist/server.js"
+    "serve": "npx tsc && node dist/server.js",
+    "dev": "nodemon src/server.ts --ext ts",
+    "reset": "npx prisma db push --force-reset && npx prisma db push && npx prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -22,7 +24,8 @@
     "@types/node": "^14.18.63",
     "prisma": "^6.11.0",
     "ts-node": "^9.1.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
     "@prisma/client": "^6.11.0",

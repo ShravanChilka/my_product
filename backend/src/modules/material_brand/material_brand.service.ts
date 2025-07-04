@@ -1,18 +1,18 @@
 import { injectable } from "tsyringe";
 import prisma from "../../core/prisma_client";
 import {
-  BrandCreateBody,
-  BrandGetByIdParam,
-  BrandGetQuery,
-  BrandUpdateBody,
-  BrandUpdateParam,
-} from "./brand.validation";
+  MaterialBrandCreateBody,
+  MaterialBrandGetByIdParam,
+  MaterialBrandGetQuery,
+  MaterialBrandUpdateBody,
+  MaterialBrandUpdateParam,
+} from "./material_brand.validation";
 import { Prisma } from "@prisma/client";
 
 @injectable()
-export default class BrandService {
-  create = async (body: BrandCreateBody) => {
-    const brand = await prisma.brand.findFirst({
+export default class MaterialBrandService {
+  create = async (body: MaterialBrandCreateBody) => {
+    const brand = await prisma.materialBrand.findFirst({
       where: {
         name: {
           equals: body.name,
@@ -21,9 +21,9 @@ export default class BrandService {
       },
     });
     if (brand) {
-      throw Error(`Brand with the name ${body.name} already exists`);
+      throw Error(`MaterialBrand with the name ${body.name} already exists`);
     }
-    const result = await prisma.brand.create({
+    const result = await prisma.materialBrand.create({
       data: {
         name: body.name,
         description: body.description,
@@ -33,8 +33,11 @@ export default class BrandService {
     return result;
   };
 
-  update = async (param: BrandUpdateParam, body: BrandUpdateBody) => {
-    const duplicate = await prisma.brand.findFirst({
+  update = async (
+    param: MaterialBrandUpdateParam,
+    body: MaterialBrandUpdateBody
+  ) => {
+    const duplicate = await prisma.materialBrand.findFirst({
       where: {
         name: {
           equals: body.name,
@@ -43,31 +46,31 @@ export default class BrandService {
       },
     });
     if (duplicate) {
-      throw Error(`Brand with the name ${body.name} already exists`);
+      throw Error(`MaterialBrand with the name ${body.name} already exists`);
     }
-    const brand = await prisma.brand.findFirst({
+    const brand = await prisma.materialBrand.findFirst({
       where: { id: Number(param.id) },
     });
-    if (!brand) throw Error(`Brand with id ${param.id} not found!`);
+    if (!brand) throw Error(`MaterialBrand with id ${param.id} not found!`);
 
-    const result = await prisma.brand.update({
+    const result = await prisma.materialBrand.update({
       where: { id: Number(param.id) },
       data: body,
     });
     return result;
   };
 
-  get = async (query: BrandGetQuery) => {
+  get = async (query: MaterialBrandGetQuery) => {
     console.log(query);
     const page = Number(query.page ?? 1);
     const perPage = Number(query.perPage ?? 10);
     const skip = (page - 1) * perPage;
-    const where: Prisma.BrandWhereInput | undefined = query.q
+    const where: Prisma.MaterialBrandWhereInput | undefined = query.q
       ? { name: { contains: query.q, mode: "insensitive" } }
       : {};
 
     const [items, total] = await Promise.all([
-      prisma.brand.findMany({
+      prisma.materialBrand.findMany({
         where: where,
         skip: skip,
         take: perPage,
@@ -75,7 +78,7 @@ export default class BrandService {
           createdAt: "desc",
         },
       }),
-      prisma.brand.count({ where: where }),
+      prisma.materialBrand.count({ where: where }),
     ]);
 
     return {
@@ -86,11 +89,11 @@ export default class BrandService {
     };
   };
 
-  getById = async (param: BrandGetByIdParam) => {
-    const brand = await prisma.brand.findFirst({
+  getById = async (param: MaterialBrandGetByIdParam) => {
+    const brand = await prisma.materialBrand.findFirst({
       where: { id: Number(param.id) },
     });
-    if (!brand) throw Error(`Brand with id ${param.id} not found!`);
+    if (!brand) throw Error(`MaterialBrand with id ${param.id} not found!`);
     return brand;
   };
 }

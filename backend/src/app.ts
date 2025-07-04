@@ -5,9 +5,10 @@ import helmet from "helmet";
 import AuthRoutes from "./modules/auth/auth.routes";
 import { handleError } from "./middlewares/error.middleware";
 import { container } from "tsyringe";
-import BrandRoutes from "./modules/brand/brand.routes";
-import CategoryRoutes from "./modules/category/category.routes";
+import BrandRoutes from "./modules/material_brand/material_brand.routes";
+import CategoryRoutes from "./modules/material_category/material_category.routes";
 import MaterialRoutes from "./modules/material/material.routes";
+import LocationRoutes from "./modules/location/location.routes";
 
 class App {
   private application: Application;
@@ -30,14 +31,21 @@ class App {
 
   private initRoutes() {
     this.application.use("/api", container.resolve(AuthRoutes).router);
-    this.application.use("/api/brand", container.resolve(BrandRoutes).router);
     this.application.use(
-      "/api/category",
+      "/api/material_brand",
+      container.resolve(BrandRoutes).router
+    );
+    this.application.use(
+      "/api/material_category",
       container.resolve(CategoryRoutes).router
     );
     this.application.use(
       "/api/material",
       container.resolve(MaterialRoutes).router
+    );
+    this.application.use(
+      "/api/location",
+      container.resolve(LocationRoutes).router
     );
   }
 

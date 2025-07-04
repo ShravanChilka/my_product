@@ -9,7 +9,7 @@ import {
   MaterialUpdateParam,
 } from "./material.validation";
 import { Prisma } from "@prisma/client";
-import CategoryService from "../category/category.service";
+import CategoryService from "../material_category/material_category.service";
 import { parseBoolean } from "../../utils/parse_boolean";
 
 @injectable()
@@ -33,12 +33,18 @@ export default class MaterialService {
       throw Error(`Material with the name ${body.name} already exists`);
     }
     const category = await this.service.getById({ id: body.categoryId });
-    const sku = await this.generateSku({
+    const tempSku = `TEMP-${Date.now()}`;
+    const tempResult = await prisma.material.create({
+      data: { ...body, sku: tempSku },
+    });
+    const sku = this.generateSku({
       materialName: body.name,
       categoryName: category.name,
+      materialId: tempResult.id,
     });
-    const result = await prisma.material.create({
-      data: { ...body, sku },
+    const result = await prisma.material.update({
+      where: { id: tempResult.id },
+      data: { sku },
     });
     return result;
   };
@@ -67,9 +73,10 @@ export default class MaterialService {
       });
       const categoryName = category.name;
       const materialName = body.name ?? material.name;
-      sku = await this.generateSku({
+      sku = this.generateSku({
         categoryName,
         materialName,
+        materialId: material.id,
       });
     }
 
@@ -84,9 +91,34 @@ export default class MaterialService {
     const page = Number(query.page ?? 1);
     const perPage = Number(query.perPage ?? 10);
     const skip = (page - 1) * perPage;
-    const where: Prisma.MaterialWhereInput | undefined = query.q
-      ? { name: { contains: query.q, mode: "insensitive" } }
-      : {};
+    const where: Prisma.MaterialWhereInput = {
+      OR:
+        query.q != null
+          ? [
+              {
+                name: { contains: query.q, mode: "insensitive" },
+              },
+              {
+                sku: {
+                  contains: query.q,
+                  mode: "insensitive",
+                },
+              },
+            ]
+          : undefined,
+      categoryId:
+        query.categoryId != null
+          ? {
+              equals: Number(query.categoryId),
+            }
+          : undefined,
+      brandId:
+        query.brandId != null
+          ? {
+              equals: Number(query.brandId),
+            }
+          : undefined,
+    };
 
     const [items, total] = await Promise.all([
       prisma.material.findMany({
@@ -126,7 +158,7 @@ export default class MaterialService {
     return material;
   };
 
-  private generateSku = async (data: MaterialGenerateSku) => {
+  private generateSku = (data: MaterialGenerateSku) => {
     const materialNameShort = data.materialName
       .toUpperCase()
       .replace(/[^A-Z]/g, "")
@@ -135,17 +167,7 @@ export default class MaterialService {
       .toUpperCase()
       .replace(/[^A-Z]/g, "")
       .slice(0, 3);
-
-    const existingCount = await prisma.material.count({
-      where: {
-        sku: {
-          startsWith: materialNameShort,
-        },
-      },
-    });
-    const counter = existingCount + 1;
-    const paddedCounter = counter.toString().padStart(3, "0");
-    const sku = `${materialNameShort}-${categoryNameShort}-${paddedCounter}`;
-    return sku;
+    const paddedId = data.materialId.toString().padStart(4, "0");
+    return `${materialNameShort}-${categoryNameShort}-${paddedId}`;
   };
 }

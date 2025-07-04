@@ -1,6 +1,6 @@
 import z from "zod";
 
-export default class CategoryValidation {
+export default class MaterialCategoryValidation {
   static createBody = z.object({
     name: z.string().trim().min(3).max(100),
     parentId: z.number().int().positive().optional(),
@@ -26,12 +26,18 @@ export default class CategoryValidation {
   });
 }
 
-export type CategoryCreateBody = z.infer<typeof CategoryValidation.createBody>;
-export type CategoryUpdateBody = z.infer<typeof CategoryValidation.updateBody>;
-export type CategoryUpdateParam = z.infer<
-  typeof CategoryValidation.updateParam
+export type MaterialCategoryCreateBody = z.infer<
+  typeof MaterialCategoryValidation.createBody
 >;
-export type CategoryGetQuery = z.infer<typeof CategoryValidation.getQuery>;
-export type CategoryGetByIdParam = z.infer<
-  typeof CategoryValidation.getByIdParam
+export type MaterialCategoryUpdateBody = z.infer<
+  typeof MaterialCategoryValidation.updateBody
+>;
+export type MaterialCategoryUpdateParam = z.infer<
+  typeof MaterialCategoryValidation.updateParam
+>;
+export type MaterialCategoryGetQuery = z.infer<
+  typeof MaterialCategoryValidation.getQuery
+>;
+export type MaterialCategoryGetByIdParam = z.infer<
+  typeof MaterialCategoryValidation.getByIdParam
 >;

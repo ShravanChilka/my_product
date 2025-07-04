@@ -1,16 +1,18 @@
 import { Router } from "express";
-import BrandController from "./brand.controller";
+import MaterialBrandController from "./material_brand.controller";
 import { inject, injectable } from "tsyringe";
 import BaseRoute from "../../base/base.route";
 import { validateRequest } from "../../middlewares/validation.middleware";
-import BrandValidation from "./brand.validation";
+import MaterialBrandValidation from "./material_brand.validation";
 
 @injectable()
-export default class BrandRoutes implements BaseRoute {
+export default class MaterialBrandRoutes implements BaseRoute {
   public router: Router;
-  private controller: BrandController;
+  private controller: MaterialBrandController;
 
-  constructor(@inject(BrandController) controller: BrandController) {
+  constructor(
+    @inject(MaterialBrandController) controller: MaterialBrandController
+  ) {
     this.router = Router();
     this.controller = controller;
     this.createRoutes();
@@ -20,34 +22,34 @@ export default class BrandRoutes implements BaseRoute {
     this.router.post(
       "/",
       validateRequest({
-        body: BrandValidation.createBody,
+        body: MaterialBrandValidation.createBody,
       }),
       this.controller.create
     );
     this.router.patch(
       "/:id",
       validateRequest({
-        params: BrandValidation.updateParam,
-        body: BrandValidation.updateBody,
+        params: MaterialBrandValidation.updateParam,
+        body: MaterialBrandValidation.updateBody,
       }),
       this.controller.update
     );
     this.router.put(
       "/:id",
       validateRequest({
-        params: BrandValidation.updateParam,
-        body: BrandValidation.updateBody,
+        params: MaterialBrandValidation.updateParam,
+        body: MaterialBrandValidation.updateBody,
       }),
       this.controller.update
     );
     this.router.get(
       "/:id",
-      validateRequest({ params: BrandValidation.getByIdParam }),
+      validateRequest({ params: MaterialBrandValidation.getByIdParam }),
       this.controller.getById
     );
     this.router.get(
       "/",
-      validateRequest({ query: BrandValidation.getQuery }),
+      validateRequest({ query: MaterialBrandValidation.getQuery }),
       this.controller.get
     );
   }

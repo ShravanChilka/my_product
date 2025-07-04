@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export default class BrandValidation {
+export default class MaterialBrandValidation {
   static createBody = z.object({
     name: z.string().trim().min(3).max(100),
     description: z.string().trim().min(3).max(200).optional(),
@@ -28,8 +28,18 @@ export default class BrandValidation {
   });
 }
 
-export type BrandCreateBody = z.infer<typeof BrandValidation.createBody>;
-export type BrandUpdateBody = z.infer<typeof BrandValidation.updateBody>;
-export type BrandUpdateParam = z.infer<typeof BrandValidation.updateParam>;
-export type BrandGetQuery = z.infer<typeof BrandValidation.getQuery>;
-export type BrandGetByIdParam = z.infer<typeof BrandValidation.getByIdParam>;
+export type MaterialBrandCreateBody = z.infer<
+  typeof MaterialBrandValidation.createBody
+>;
+export type MaterialBrandUpdateBody = z.infer<
+  typeof MaterialBrandValidation.updateBody
+>;
+export type MaterialBrandUpdateParam = z.infer<
+  typeof MaterialBrandValidation.updateParam
+>;
+export type MaterialBrandGetQuery = z.infer<
+  typeof MaterialBrandValidation.getQuery
+>;
+export type MaterialBrandGetByIdParam = z.infer<
+  typeof MaterialBrandValidation.getByIdParam
+>;

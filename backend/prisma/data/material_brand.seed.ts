@@ -1,6 +1,6 @@
 import { prisma } from "../seed";
 
-class BrandSeed {
+export default class MaterialBrandSeed {
   seed = async () => {
     const brands = [
       {
@@ -73,7 +73,7 @@ class BrandSeed {
 
     for (const brand of brands) {
       const { id, ...data } = brand;
-      await prisma.brand.upsert({
+      await prisma.materialBrand.upsert({
         where: { id: brand.id },
         create: data,
         update: data,
@@ -82,5 +82,3 @@ class BrandSeed {
     console.log(`Inserted ${brands.length} brands`);
   };
 }
-
-export default BrandSeed;
