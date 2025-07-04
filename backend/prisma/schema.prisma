@@ -32,6 +32,7 @@ model Material {
     createdAt        DateTime         @default(now())
     updatedAt        DateTime?        @updatedAt
     deletedAt        DateTime?
+    inventories      Inventory[]
 }
 
 model UnitsOfMeasure {
@@ -65,17 +66,18 @@ model MaterialBrand {
 }
 
 model Location {
-    id        Int          @id @default(autoincrement())
-    code      String       @unique
-    name      String       @unique
-    type      LocationType @default(warehouse)
-    address   String
-    parentId  Int?
-    parent    Location?    @relation("ParentChild", fields: [parentId], references: [id])
-    children  Location[]   @relation("ParentChild")
-    createdAt DateTime     @default(now())
-    updatedAt DateTime?    @updatedAt
-    deletedAt DateTime?
+    id          Int          @id @default(autoincrement())
+    code        String       @unique
+    name        String       @unique
+    type        LocationType @default(warehouse)
+    address     String
+    parentId    Int?
+    parent      Location?    @relation("ParentChild", fields: [parentId], references: [id])
+    children    Location[]   @relation("ParentChild")
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime?    @updatedAt
+    deletedAt   DateTime?
+    inventories Inventory[]
 }
 
 enum LocationType {
@@ -83,4 +85,20 @@ enum LocationType {
     store
     vendor
     bin
+}
+
+model Inventory {
+    id                Int       @id @default(autoincrement())
+    materialId        Int
+    material          Material  @relation(fields: [materialId], references: [id])
+    locationId        Int
+    location          Location  @relation(fields: [locationId], references: [id])
+    quantity          Int       @default(0)
+    reservedQuantity  Int       @default(0)
+    thresholdQuantity Int       @default(0)
+    createdAt         DateTime  @default(now())
+    updatedAt         DateTime? @updatedAt
+    deletedAt         DateTime?
+
+    @@unique([materialId, locationId])
 }

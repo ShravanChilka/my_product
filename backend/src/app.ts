@@ -9,6 +9,7 @@ import BrandRoutes from "./modules/material_brand/material_brand.routes";
 import CategoryRoutes from "./modules/material_category/material_category.routes";
 import MaterialRoutes from "./modules/material/material.routes";
 import LocationRoutes from "./modules/location/location.routes";
+import InventoryRoutes from "./modules/inventory/inventory.routes";
 
 class App {
   private application: Application;
@@ -46,6 +47,10 @@ class App {
     this.application.use(
       "/api/location",
       container.resolve(LocationRoutes).router
+    );
+    this.application.use(
+      "/api/inventory",
+      container.resolve(InventoryRoutes).router
     );
   }
 
