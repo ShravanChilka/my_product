@@ -23,7 +23,6 @@ export default class CategoryService {
     if (category) {
       throw Error(`Category with the name ${body.name} already exists`);
     }
-    console.log(body);
     const result = await prisma.category.create({
       data: {
         name: body.name,

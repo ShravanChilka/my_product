@@ -7,6 +7,7 @@ import { handleError } from "./middlewares/error.middleware";
 import { container } from "tsyringe";
 import BrandRoutes from "./modules/brand/brand.routes";
 import CategoryRoutes from "./modules/category/category.routes";
+import MaterialRoutes from "./modules/material/material.routes";
 
 class App {
   private application: Application;
@@ -33,6 +34,10 @@ class App {
     this.application.use(
       "/api/category",
       container.resolve(CategoryRoutes).router
+    );
+    this.application.use(
+      "/api/material",
+      container.resolve(MaterialRoutes).router
     );
   }
 

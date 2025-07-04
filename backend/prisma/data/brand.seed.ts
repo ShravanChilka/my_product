@@ -63,7 +63,6 @@ class BrandSeed {
         description: "Premium brand for processed meat products.",
         logoURL: "https://example.com/logos/licious.png", // Pepperoni
       },
-
       {
         id: 11,
         name: "Keya",
