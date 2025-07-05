@@ -1,18 +1,18 @@
 import { injectable } from "tsyringe";
 import prisma from "../../core/prisma_client";
 import {
-  UnitTypeCreateBody,
-  UnitTypeGetByIdParam,
-  UnitTypeGetQuery,
-  UnitTypeUpdateBody,
-  UnitTypeUpdateParam,
-} from "./unit_type.validation";
+  PackageTypeCreateBody,
+  PackageTypeGetByIdParam,
+  PackageTypeGetQuery,
+  PackageTypeUpdateBody,
+  PackageTypeUpdateParam,
+} from "./package_type.validation";
 import { Prisma } from "@prisma/client";
 
 @injectable()
-export default class UnitTypeService {
-  create = async (body: UnitTypeCreateBody) => {
-    const unitType = await prisma.unitType.findFirst({
+export default class PackageTypeService {
+  create = async (body: PackageTypeCreateBody) => {
+    const packageType = await prisma.packageType.findFirst({
       where: {
         name: {
           equals: body.name,
@@ -20,17 +20,20 @@ export default class UnitTypeService {
         },
       },
     });
-    if (unitType) {
-      throw Error(`UnitType with the name ${body.name} already exists`);
+    if (packageType) {
+      throw Error(`PackageType with the name ${body.name} already exists`);
     }
-    const result = await prisma.unitType.create({
+    const result = await prisma.packageType.create({
       data: body,
     });
     return result;
   };
 
-  update = async (param: UnitTypeUpdateParam, body: UnitTypeUpdateBody) => {
-    const duplicate = await prisma.unitType.findFirst({
+  update = async (
+    param: PackageTypeUpdateParam,
+    body: PackageTypeUpdateBody
+  ) => {
+    const duplicate = await prisma.packageType.findFirst({
       where: {
         name: {
           equals: body.name,
@@ -39,26 +42,26 @@ export default class UnitTypeService {
       },
     });
     if (duplicate) {
-      throw Error(`UnitType with the name ${body.name} already exists`);
+      throw Error(`PackageType with the name ${body.name} already exists`);
     }
-    const unitType = await prisma.unitType.findFirst({
+    const packageType = await prisma.packageType.findFirst({
       where: { id: Number(param.id) },
     });
-    if (!unitType) throw Error(`UnitType with id ${param.id} not found!`);
+    if (!packageType) throw Error(`PackageType with id ${param.id} not found!`);
 
-    const result = await prisma.unitType.update({
+    const result = await prisma.packageType.update({
       where: { id: Number(param.id) },
       data: body,
     });
     return result;
   };
 
-  get = async (query: UnitTypeGetQuery) => {
+  get = async (query: PackageTypeGetQuery) => {
     console.log(query);
     const page = Number(query.page ?? 1);
     const perPage = Number(query.perPage ?? 10);
     const skip = (page - 1) * perPage;
-    const where: Prisma.UnitTypeWhereInput | undefined = query.q
+    const where: Prisma.PackageTypeWhereInput | undefined = query.q
       ? {
           OR: [
             { name: { contains: query.q, mode: "insensitive" } },
@@ -68,7 +71,7 @@ export default class UnitTypeService {
       : {};
 
     const [items, total] = await Promise.all([
-      prisma.unitType.findMany({
+      prisma.packageType.findMany({
         where: where,
         skip: skip,
         take: perPage,
@@ -76,7 +79,7 @@ export default class UnitTypeService {
           createdAt: "desc",
         },
       }),
-      prisma.unitType.count({ where: where }),
+      prisma.packageType.count({ where: where }),
     ]);
 
     return {
@@ -87,11 +90,11 @@ export default class UnitTypeService {
     };
   };
 
-  getById = async (param: UnitTypeGetByIdParam) => {
-    const unitType = await prisma.unitType.findFirst({
+  getById = async (param: PackageTypeGetByIdParam) => {
+    const packageType = await prisma.packageType.findFirst({
       where: { id: Number(param.id) },
     });
-    if (!unitType) throw Error(`UnitType with id ${param.id} not found!`);
-    return unitType;
+    if (!packageType) throw Error(`PackageType with id ${param.id} not found!`);
+    return packageType;
   };
 }

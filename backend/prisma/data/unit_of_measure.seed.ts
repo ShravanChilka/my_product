@@ -23,7 +23,6 @@ class UnitOfMeasureSeed {
         update: data,
       });
     }
-
     console.log(`Inserted ${units.length} units of measure`);
   };
 }

@@ -1,8 +1,8 @@
 import { prisma } from "../seed";
 
-export default class UnitTypeSeed {
+export default class PackageTypeSeed {
   seed = async () => {
-    const unitTypes = [
+    const packageTypes = [
       {
         id: 1,
         name: "Bottle",
@@ -81,13 +81,14 @@ export default class UnitTypeSeed {
       },
     ];
 
-    for (const unitType of unitTypes) {
-      const { id, ...data } = unitType;
-      await prisma.unitType.upsert({
-        where: { id: unitType.id },
+    for (const packageType of packageTypes) {
+      const { id, ...data } = packageType;
+      await prisma.packageType.upsert({
+        where: { id: packageType.id },
         create: data,
         update: data,
       });
     }
+    console.log(`Inserted ${packageTypes.length} package types`);
   };
 }

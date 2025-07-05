@@ -6,7 +6,9 @@ import MaterialSeed from "./data/material.seed";
 import MaterialBrandSeed from "./data/material_brand.seed";
 import LocationSeed from "./data/location.seed";
 import InventorySeed from "./data/inventory.seed";
-import UnitTypeSeed from "./data/unit_type.seed";
+import PackageTypeSeed from "./data/package_type.seed";
+import PackageSizeSeed from "./data/package_size.seed";
+import MaterialPackageSeed from "./data/material_package.seed";
 
 export const prisma = new PrismaClient();
 
@@ -19,8 +21,10 @@ class Seed {
       await new MaterialBrandSeed().seed();
       await new MaterialSeed().seed();
       await new LocationSeed().seed();
+      await new PackageTypeSeed().seed();
+      await new PackageSizeSeed().seed();
+      await new MaterialPackageSeed().seed();
       await new InventorySeed().seed();
-      await new UnitTypeSeed().seed();
     } catch (error) {
       console.error("Error during seeding:", error);
     } finally {

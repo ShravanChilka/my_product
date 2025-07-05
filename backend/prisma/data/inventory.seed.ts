@@ -6,15 +6,15 @@ export default class InventorySeed {
       // Central Warehouse (WAR-0001)
       {
         id: 1,
-        materialId: 1,
+        materialPackageId: 1,
         locationId: 1,
         quantity: 500,
         reservedQuantity: 50,
         thresholdQuantity: 100,
-      }, // Flour
+      }, // All-Purpose Flour
       {
         id: 2,
-        materialId: 3,
+        materialPackageId: 3,
         locationId: 1,
         quantity: 300,
         reservedQuantity: 20,
@@ -22,7 +22,7 @@ export default class InventorySeed {
       }, // Tomato Sauce
       {
         id: 3,
-        materialId: 5,
+        materialPackageId: 5,
         locationId: 1,
         quantity: 1000,
         reservedQuantity: 100,
@@ -32,7 +32,7 @@ export default class InventorySeed {
       // Bin A - Ingredients (BIN-0006)
       {
         id: 4,
-        materialId: 6,
+        materialPackageId: 6,
         locationId: 6,
         quantity: 800,
         reservedQuantity: 60,
@@ -40,7 +40,7 @@ export default class InventorySeed {
       }, // Sugar
       {
         id: 5,
-        materialId: 7,
+        materialPackageId: 7,
         locationId: 6,
         quantity: 1000,
         reservedQuantity: 80,
@@ -50,7 +50,7 @@ export default class InventorySeed {
       // Bin B - Packaging (BIN-0007)
       {
         id: 6,
-        materialId: 11,
+        materialPackageId: 11,
         locationId: 7,
         quantity: 300,
         reservedQuantity: 10,
@@ -60,7 +60,7 @@ export default class InventorySeed {
       // Kitchen Store (STR-0002)
       {
         id: 7,
-        materialId: 2,
+        materialPackageId: 2,
         locationId: 2,
         quantity: 150,
         reservedQuantity: 20,
@@ -68,7 +68,7 @@ export default class InventorySeed {
       }, // Mozzarella Cheese
       {
         id: 8,
-        materialId: 8,
+        materialPackageId: 8,
         locationId: 2,
         quantity: 200,
         reservedQuantity: 25,
@@ -78,7 +78,7 @@ export default class InventorySeed {
       // Delivery Store (STR-0003)
       {
         id: 9,
-        materialId: 9,
+        materialPackageId: 9,
         locationId: 3,
         quantity: 120,
         reservedQuantity: 10,
@@ -86,7 +86,7 @@ export default class InventorySeed {
       }, // Bell Pepper
       {
         id: 10,
-        materialId: 10,
+        materialPackageId: 10,
         locationId: 3,
         quantity: 180,
         reservedQuantity: 15,
@@ -96,7 +96,7 @@ export default class InventorySeed {
       // Cold Storage (WAR-0008)
       {
         id: 11,
-        materialId: 2,
+        materialPackageId: 2,
         locationId: 8,
         quantity: 100,
         reservedQuantity: 5,
@@ -106,7 +106,7 @@ export default class InventorySeed {
       // Bin C - Dairy (BIN-0009)
       {
         id: 12,
-        materialId: 2,
+        materialPackageId: 2,
         locationId: 9,
         quantity: 200,
         reservedQuantity: 30,
@@ -116,7 +116,7 @@ export default class InventorySeed {
       // Bin D - Meat (BIN-0010)
       {
         id: 13,
-        materialId: 10,
+        materialPackageId: 10,
         locationId: 10,
         quantity: 250,
         reservedQuantity: 20,

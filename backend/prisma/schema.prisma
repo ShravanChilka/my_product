@@ -17,36 +17,6 @@ model User {
     deletedAt DateTime?
 }
 
-model Material {
-    id              Int              @id @default(autoincrement())
-    name            String           @unique
-    sku             String           @unique
-    description     String?
-    unitOfMeasureId Int
-    unitOfMeasure   UnitOfMeasure    @relation(fields: [unitOfMeasureId], references: [id])
-    categoryId      Int
-    category        MaterialCategory @relation(fields: [categoryId], references: [id])
-    brandId         Int
-    brand           MaterialBrand    @relation(fields: [brandId], references: [id])
-    isActive        Boolean          @default(true)
-    createdAt       DateTime         @default(now())
-    updatedAt       DateTime?        @updatedAt
-    deletedAt       DateTime?
-    inventories     Inventory[]
-}
-
-model UnitOfMeasure {
-    id           Int        @id @default(autoincrement())
-    name         String     @unique
-    abbreviation String     @unique
-    materials    Material[]
-    createdAt    DateTime   @default(now())
-    updatedAt    DateTime?  @updatedAt
-    deletedAt    DateTime?
-    // packagingUnits     PackagingType[] @relation("PackagingUnit")
-    // packagingBaseUnits PackagingType[] @relation("PackagingBaseUnit")
-}
-
 model MaterialCategory {
     id        Int                @id @default(autoincrement())
     name      String             @unique
@@ -92,39 +62,93 @@ enum LocationType {
     bin
 }
 
+model PackageType {
+    id               Int               @id @default(autoincrement())
+    name             String            @unique
+    description      String?
+    createdAt        DateTime          @default(now())
+    updatedAt        DateTime?
+    deletedAt        DateTime?
+    materialPackages MaterialPackage[]
+}
+
+model UnitOfMeasure {
+    id               Int           @id @default(autoincrement())
+    name             String        @unique
+    abbreviation     String        @unique
+    createdAt        DateTime      @default(now())
+    updatedAt        DateTime?     @updatedAt
+    deletedAt        DateTime?
+    materials        Material[]
+    packageUnits     PackageSize[] @relation("PackageUnit")
+    basePackageUnits PackageSize[] @relation("BasePackageUnit")
+}
+
+model PackageSize {
+    id                  Int               @id @default(autoincrement())
+    size                Float
+    unitOfMeasureId     Int
+    unitOfMeasure       UnitOfMeasure     @relation("PackageUnit", fields: [unitOfMeasureId], references: [id])
+    baseUnitOfMeasureId Int
+    baseUnitOfMeasure   UnitOfMeasure     @relation("BasePackageUnit", fields: [baseUnitOfMeasureId], references: [id])
+    conversionFactor    Float             @default(1)
+    createdAt           DateTime          @default(now())
+    updatedAt           DateTime?
+    deletedAt           DateTime?
+    materialPackages    MaterialPackage[]
+
+    @@unique([size, unitOfMeasureId])
+}
+
+model Material {
+    id              Int               @id @default(autoincrement())
+    name            String            @unique
+    sku             String            @unique
+    description     String?
+    unitOfMeasureId Int
+    unitOfMeasure   UnitOfMeasure     @relation(fields: [unitOfMeasureId], references: [id])
+    categoryId      Int
+    category        MaterialCategory  @relation(fields: [categoryId], references: [id])
+    brandId         Int
+    brand           MaterialBrand     @relation(fields: [brandId], references: [id])
+    isActive        Boolean           @default(true)
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime?         @updatedAt
+    deletedAt       DateTime?
+    MaterialPackage MaterialPackage[]
+}
+
+model MaterialPackage {
+    id            Int         @id @default(autoincrement())
+    materialId    Int
+    material      Material    @relation(fields: [materialId], references: [id])
+    packageTypeId Int
+    packageType   PackageType @relation(fields: [packageTypeId], references: [id])
+    packageSizeId Int
+    packageSize   PackageSize @relation(fields: [packageSizeId], references: [id])
+    sku           String      @unique
+    barcode       String?
+    isActive      Boolean     @default(true)
+    inventories   Inventory[]
+    createdAt     DateTime    @default(now())
+    updatedAt     DateTime?   @updatedAt
+    deletedAt     DateTime?
+
+    @@unique([materialId, packageTypeId, packageSizeId])
+}
+
 model Inventory {
-    id                Int       @id @default(autoincrement())
-    materialId        Int
-    material          Material  @relation(fields: [materialId], references: [id])
+    id                Int             @id @default(autoincrement())
+    materialPackageId Int
+    materialPackage   MaterialPackage @relation(fields: [materialPackageId], references: [id])
     locationId        Int
-    location          Location  @relation(fields: [locationId], references: [id])
-    quantity          Int       @default(0)
-    reservedQuantity  Int       @default(0)
-    thresholdQuantity Int       @default(0)
-    createdAt         DateTime  @default(now())
-    updatedAt         DateTime? @updatedAt
+    location          Location        @relation(fields: [locationId], references: [id])
+    quantity          Float           @default(0)
+    reservedQuantity  Float           @default(0)
+    thresholdQuantity Float           @default(0)
+    createdAt         DateTime        @default(now())
+    updatedAt         DateTime?       @updatedAt
     deletedAt         DateTime?
 
-    @@unique([materialId, locationId])
+    @@unique([materialPackageId, locationId])
 }
-
-model UnitType {
-    id          Int       @id @default(autoincrement())
-    name        String    @unique
-    description String?
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime?
-    deletedAt   DateTime?
-}
-
-// model PackagingType {
-//     id                  Int           @id @default(autoincrement())
-//     name                String        @unique
-//     unitType            String
-//     size                Float
-//     unitOfMeasureId     Int
-//     unitOfMeasure       UnitOfMeasure @relation("PackagingUnit", fields: [unitOfMeasureId], references: [id])
-//     baseUnitOfMeasureId Int
-//     baseUnitOfMeasure   UnitOfMeasure @relation("PackagingBaseUnit", fields: [baseUnitOfMeasureId], references: [id])
-//     conversionFactor    Float
-// }

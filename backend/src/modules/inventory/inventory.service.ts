@@ -15,8 +15,8 @@ export default class InventoryService {
   create = async (body: InventoryCreateBody) => {
     const inventory = await prisma.inventory.findFirst({
       where: {
-        materialId: {
-          equals: body.materialId,
+        materialPackageId: {
+          equals: body.materialPackageId,
         },
         locationId: {
           equals: body.locationId,
@@ -25,7 +25,7 @@ export default class InventoryService {
     });
     if (inventory) {
       throw Error(
-        `Inventory with the materialId and locationId already exists`
+        `Inventory with the materialPackageId and locationId already exists`
       );
     }
     const result = await prisma.inventory.create({
@@ -37,8 +37,8 @@ export default class InventoryService {
   update = async (param: InventoryUpdateParam, body: InventoryUpdateBody) => {
     const duplicate = await prisma.inventory.findFirst({
       where: {
-        materialId: {
-          equals: body.materialId,
+        materialPackageId: {
+          equals: body.materialPackageId,
         },
         locationId: {
           equals: body.locationId,
@@ -47,7 +47,7 @@ export default class InventoryService {
     });
     if (duplicate) {
       throw Error(
-        `Inventory with the materialId and locationId already exists`
+        `Inventory with the materialPackageId and locationId already exists`
       );
     }
     const inventory = await prisma.inventory.findFirst({
@@ -67,10 +67,10 @@ export default class InventoryService {
     const perPage = Number(query.perPage ?? 10);
     const skip = (page - 1) * perPage;
     const where: Prisma.InventoryWhereInput = {
-      materialId:
-        query.materialId != null
+      materialPackageId:
+        query.materialPackageId != null
           ? {
-              equals: Number(query.materialId),
+              equals: Number(query.materialPackageId),
             }
           : undefined,
       locationId:
@@ -90,7 +90,7 @@ export default class InventoryService {
           createdAt: "desc",
         },
         include: {
-          material: parseBoolean(query.material),
+          materialPackage: parseBoolean(query.materialPackage),
           location: parseBoolean(query.location),
         },
       }),
@@ -109,7 +109,7 @@ export default class InventoryService {
     const inventory = await prisma.inventory.findFirst({
       where: { id: Number(param.id) },
       include: {
-        material: true,
+        materialPackage: true,
         location: true,
       },
     });

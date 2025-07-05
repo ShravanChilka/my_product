@@ -2,7 +2,7 @@ import z from "zod";
 
 export default class InventoryValidation {
   static createBody = z.object({
-    materialId: z.number().positive(),
+    materialPackageId: z.number().positive(),
     locationId: z.number().positive(),
     quantity: z.number().positive().default(0).optional(),
     reservedQuantity: z.number().positive().default(0).optional(),
@@ -10,7 +10,7 @@ export default class InventoryValidation {
   });
 
   static updateBody = z.object({
-    materialId: z.number().positive().optional(),
+    materialPackageId: z.number().positive().optional(),
     locationId: z.number().positive().optional(),
     quantity: z.number().positive().optional(),
     reservedQuantity: z.number().positive().optional(),
@@ -24,9 +24,11 @@ export default class InventoryValidation {
   static getQuery = z.object({
     page: z.coerce.number().positive().optional(),
     perPage: z.coerce.number().positive().optional(),
-    material: z.union([z.literal("true"), z.literal("false")]).optional(),
+    materialPackage: z
+      .union([z.literal("true"), z.literal("false")])
+      .optional(),
     location: z.union([z.literal("true"), z.literal("false")]).optional(),
-    materialId: z.coerce.number().positive().optional(),
+    materialPackageId: z.coerce.number().positive().optional(),
     locationId: z.coerce.number().positive().optional(),
   });
 

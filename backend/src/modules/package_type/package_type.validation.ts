@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export default class UnitTypeValidation {
+export default class PackageTypeValidation {
   static createBody = z.object({
     name: z.string().trim().min(3).max(100),
     description: z.string().trim().min(3).max(200).optional(),
@@ -26,12 +26,18 @@ export default class UnitTypeValidation {
   });
 }
 
-export type UnitTypeCreateBody = z.infer<typeof UnitTypeValidation.createBody>;
-export type UnitTypeUpdateBody = z.infer<typeof UnitTypeValidation.updateBody>;
-export type UnitTypeUpdateParam = z.infer<
-  typeof UnitTypeValidation.updateParam
+export type PackageTypeCreateBody = z.infer<
+  typeof PackageTypeValidation.createBody
 >;
-export type UnitTypeGetQuery = z.infer<typeof UnitTypeValidation.getQuery>;
-export type UnitTypeGetByIdParam = z.infer<
-  typeof UnitTypeValidation.getByIdParam
+export type PackageTypeUpdateBody = z.infer<
+  typeof PackageTypeValidation.updateBody
+>;
+export type PackageTypeUpdateParam = z.infer<
+  typeof PackageTypeValidation.updateParam
+>;
+export type PackageTypeGetQuery = z.infer<
+  typeof PackageTypeValidation.getQuery
+>;
+export type PackageTypeGetByIdParam = z.infer<
+  typeof PackageTypeValidation.getByIdParam
 >;

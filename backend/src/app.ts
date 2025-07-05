@@ -11,7 +11,9 @@ import MaterialRoutes from "./modules/material/material.routes";
 import LocationRoutes from "./modules/location/location.routes";
 import InventoryRoutes from "./modules/inventory/inventory.routes";
 import UnitOfMeasureRoutes from "./modules/unit_of_measure/unit_of_measure.routes";
-import UnitTypeRoutes from "./modules/unit_type/unit_type.routes";
+import PackageTypeRoutes from "./modules/package_type/package_type.routes";
+import PackageSizeRoutes from "./modules/package_size/package_size.routes";
+import MaterialPackageRoutes from "./modules/material_package/material_package.routes";
 
 class App {
   private application: Application;
@@ -55,12 +57,20 @@ class App {
       container.resolve(LocationRoutes).router
     );
     this.application.use(
-      "/api/inventory",
-      container.resolve(InventoryRoutes).router
+      "/api/package_type",
+      container.resolve(PackageTypeRoutes).router
     );
     this.application.use(
-      "/api/unit_type",
-      container.resolve(UnitTypeRoutes).router
+      "/api/package_size",
+      container.resolve(PackageSizeRoutes).router
+    );
+    this.application.use(
+      "/api/material_package",
+      container.resolve(MaterialPackageRoutes).router
+    );
+    this.application.use(
+      "/api/inventory",
+      container.resolve(InventoryRoutes).router
     );
   }
 

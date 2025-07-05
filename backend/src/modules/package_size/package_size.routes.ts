@@ -1,16 +1,18 @@
 import { inject, injectable } from "tsyringe";
 import BaseRoute from "../../base/base.route";
 import { Router } from "express";
-import UnitTypeController from "./unit_type.controller";
+import PackageSizeController from "./package_size.controller";
 import { validateRequest } from "../../middlewares/validation.middleware";
-import UnitTypeValidation from "./unit_type.validation";
+import PackageSizeValidation from "./package_size.validation";
 
 @injectable()
-export default class UnitTypeRoutes implements BaseRoute {
+export default class PackageSizeRoutes implements BaseRoute {
   public router: Router;
-  private controller: UnitTypeController;
+  private controller: PackageSizeController;
 
-  constructor(@inject(UnitTypeController) controller: UnitTypeController) {
+  constructor(
+    @inject(PackageSizeController) controller: PackageSizeController
+  ) {
     this.router = Router();
     this.controller = controller;
     this.createRoutes();
@@ -20,34 +22,34 @@ export default class UnitTypeRoutes implements BaseRoute {
     this.router.post(
       "/",
       validateRequest({
-        body: UnitTypeValidation.createBody,
+        body: PackageSizeValidation.createBody,
       }),
       this.controller.create
     );
     this.router.patch(
       "/:id",
       validateRequest({
-        params: UnitTypeValidation.updateParam,
-        body: UnitTypeValidation.updateBody,
+        params: PackageSizeValidation.updateParam,
+        body: PackageSizeValidation.updateBody,
       }),
       this.controller.update
     );
     this.router.put(
       "/:id",
       validateRequest({
-        params: UnitTypeValidation.updateParam,
-        body: UnitTypeValidation.updateBody,
+        params: PackageSizeValidation.updateParam,
+        body: PackageSizeValidation.updateBody,
       }),
       this.controller.update
     );
     this.router.get(
       "/:id",
-      validateRequest({ params: UnitTypeValidation.getByIdParam }),
+      validateRequest({ params: PackageSizeValidation.getByIdParam }),
       this.controller.getById
     );
     this.router.get(
       "/",
-      validateRequest({ query: UnitTypeValidation.getQuery }),
+      validateRequest({ query: PackageSizeValidation.getQuery }),
       this.controller.get
     );
   }

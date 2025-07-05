@@ -1,24 +1,27 @@
 import { inject, injectable } from "tsyringe";
-import UnitTypeService from "./unit_type.service";
+import PackageTypeService from "./package_type.service";
 import { Request, Response } from "express";
 import {
-  UnitTypeCreateBody,
-  UnitTypeGetByIdParam,
-  UnitTypeGetQuery,
-  UnitTypeUpdateBody,
-  UnitTypeUpdateParam,
-} from "./unit_type.validation";
+  PackageTypeCreateBody,
+  PackageTypeGetByIdParam,
+  PackageTypeGetQuery,
+  PackageTypeUpdateBody,
+  PackageTypeUpdateParam,
+} from "./package_type.validation";
 import ApiResponse from "../../shared/api.response";
 
 @injectable()
-export default class UnitTypeController {
-  private service: UnitTypeService;
+export default class PackageTypeController {
+  private service: PackageTypeService;
 
-  constructor(@inject(UnitTypeService) service: UnitTypeService) {
+  constructor(@inject(PackageTypeService) service: PackageTypeService) {
     this.service = service;
   }
 
-  create = async (req: Request<{}, {}, UnitTypeCreateBody>, res: Response) => {
+  create = async (
+    req: Request<{}, {}, PackageTypeCreateBody>,
+    res: Response
+  ) => {
     const result = await this.service.create(req.body);
     return ApiResponse.success(res, {
       data: result,
@@ -27,7 +30,7 @@ export default class UnitTypeController {
   };
 
   update = async (
-    req: Request<UnitTypeUpdateParam, {}, UnitTypeUpdateBody>,
+    req: Request<PackageTypeUpdateParam, {}, PackageTypeUpdateBody>,
     res: Response
   ) => {
     const result = await this.service.update(req.params, req.body);
@@ -36,14 +39,17 @@ export default class UnitTypeController {
     });
   };
 
-  get = async (req: Request<{}, {}, {}, UnitTypeGetQuery>, res: Response) => {
+  get = async (
+    req: Request<{}, {}, {}, PackageTypeGetQuery>,
+    res: Response
+  ) => {
     const result = await this.service.get(req.query);
     return ApiResponse.success(res, {
       data: result,
     });
   };
 
-  getById = async (req: Request<UnitTypeGetByIdParam>, res: Response) => {
+  getById = async (req: Request<PackageTypeGetByIdParam>, res: Response) => {
     const result = await this.service.getById(req.params);
     return ApiResponse.success(res, { data: result });
   };
