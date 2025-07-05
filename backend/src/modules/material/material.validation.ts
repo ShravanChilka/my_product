@@ -4,7 +4,7 @@ export default class MaterialValidation {
   static createBody = z.object({
     name: z.string().trim().min(3).max(100),
     description: z.string().trim().min(3).max(200).optional(),
-    unitsOfMeasureId: z.coerce.number().int(),
+    unitOfMeasureId: z.coerce.number().int(),
     categoryId: z.coerce.number().int(),
     brandId: z.coerce.number().int(),
   });
@@ -12,7 +12,7 @@ export default class MaterialValidation {
   static updateBody = z.object({
     name: z.string().trim().min(3).max(100).optional(),
     description: z.string().trim().min(3).max(200).optional(),
-    unitsOfMeasureId: z.coerce.number().int().optional(),
+    unitOfMeasureId: z.coerce.number().int().optional(),
     categoryId: z.coerce.number().int().optional(),
     brandId: z.coerce.number().int().optional(),
   });
@@ -30,6 +30,7 @@ export default class MaterialValidation {
     unitOfMeasure: z.union([z.literal("true"), z.literal("false")]).optional(),
     brandId: z.coerce.number().positive().optional(),
     categoryId: z.coerce.number().positive().optional(),
+    unitOfMeasureId: z.coerce.number().positive().optional(),
   });
 
   static getByIdParam = z.object({

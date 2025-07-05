@@ -18,28 +18,31 @@ model User {
 }
 
 model Material {
-    id               Int              @id @default(autoincrement())
-    name             String           @unique
-    sku              String           @unique
-    description      String?
-    unitsOfMeasureId Int
-    unitOfMeasure    UnitsOfMeasure   @relation(fields: [unitsOfMeasureId], references: [id])
-    categoryId       Int
-    category         MaterialCategory @relation(fields: [categoryId], references: [id])
-    brandId          Int
-    brand            MaterialBrand    @relation(fields: [brandId], references: [id])
-    isActive         Boolean          @default(true)
-    createdAt        DateTime         @default(now())
-    updatedAt        DateTime?        @updatedAt
-    deletedAt        DateTime?
-    inventories      Inventory[]
+    id              Int              @id @default(autoincrement())
+    name            String           @unique
+    sku             String           @unique
+    description     String?
+    unitOfMeasureId Int
+    unitOfMeasure   UnitOfMeasure    @relation(fields: [unitOfMeasureId], references: [id])
+    categoryId      Int
+    category        MaterialCategory @relation(fields: [categoryId], references: [id])
+    brandId         Int
+    brand           MaterialBrand    @relation(fields: [brandId], references: [id])
+    isActive        Boolean          @default(true)
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime?        @updatedAt
+    deletedAt       DateTime?
+    inventories     Inventory[]
 }
 
-model UnitsOfMeasure {
+model UnitOfMeasure {
     id           Int        @id @default(autoincrement())
     name         String     @unique
     abbreviation String     @unique
     materials    Material[]
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime?  @updatedAt
+    deletedAt    DateTime?
 }
 
 model MaterialCategory {

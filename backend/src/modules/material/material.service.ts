@@ -118,6 +118,12 @@ export default class MaterialService {
               equals: Number(query.brandId),
             }
           : undefined,
+      unitOfMeasureId:
+        query.unitOfMeasureId != null
+          ? {
+              equals: Number(query.unitOfMeasureId),
+            }
+          : undefined,
     };
 
     const [items, total] = await Promise.all([

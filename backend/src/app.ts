@@ -5,11 +5,12 @@ import helmet from "helmet";
 import AuthRoutes from "./modules/auth/auth.routes";
 import { handleError } from "./middlewares/error.middleware";
 import { container } from "tsyringe";
-import BrandRoutes from "./modules/material_brand/material_brand.routes";
-import CategoryRoutes from "./modules/material_category/material_category.routes";
+import MaterialBrandRoutes from "./modules/material_brand/material_brand.routes";
+import MaterialCategoryRoutes from "./modules/material_category/material_category.routes";
 import MaterialRoutes from "./modules/material/material.routes";
 import LocationRoutes from "./modules/location/location.routes";
 import InventoryRoutes from "./modules/inventory/inventory.routes";
+import UnitOfMeasureRoutes from "./modules/unit_of_measure/unit_of_measure.routes";
 
 class App {
   private application: Application;
@@ -34,11 +35,15 @@ class App {
     this.application.use("/api", container.resolve(AuthRoutes).router);
     this.application.use(
       "/api/material_brand",
-      container.resolve(BrandRoutes).router
+      container.resolve(MaterialBrandRoutes).router
     );
     this.application.use(
       "/api/material_category",
-      container.resolve(CategoryRoutes).router
+      container.resolve(MaterialCategoryRoutes).router
+    );
+    this.application.use(
+      "/api/unit_of_measure",
+      container.resolve(UnitOfMeasureRoutes).router
     );
     this.application.use(
       "/api/material",

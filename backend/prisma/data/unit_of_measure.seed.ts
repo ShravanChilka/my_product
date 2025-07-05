@@ -1,6 +1,6 @@
 import { prisma } from "../seed";
 
-class UnitsOfMeasureSeed {
+class UnitOfMeasureSeed {
   seed = async () => {
     const units = [
       { id: 1, name: "Kilogram", abbreviation: "kg" },
@@ -17,7 +17,7 @@ class UnitsOfMeasureSeed {
 
     for (const unit of units) {
       const { id, ...data } = unit;
-      await prisma.unitsOfMeasure.upsert({
+      await prisma.unitOfMeasure.upsert({
         where: { id: unit.id },
         create: data,
         update: data,
@@ -28,4 +28,4 @@ class UnitsOfMeasureSeed {
   };
 }
 
-export default UnitsOfMeasureSeed;
+export default UnitOfMeasureSeed;

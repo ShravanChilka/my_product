@@ -8,7 +8,7 @@ class MaterialSeed {
         name: "All-Purpose Flour",
         sku: "FLR-001",
         description: "Used for pizza dough",
-        unitsOfMeasureId: 1, // Kilogram
+        unitOfMeasureId: 1, // Kilogram
         categoryId: 4, // Base
         brandId: 1, // Pillsbury
       },
@@ -17,7 +17,7 @@ class MaterialSeed {
         name: "Mozzarella Cheese",
         sku: "CHS-001",
         description: "Shredded cheese topping",
-        unitsOfMeasureId: 1, // Kilogram
+        unitOfMeasureId: 1, // Kilogram
         categoryId: 13, // Dairy
         brandId: 2, // Amul
       },
@@ -26,7 +26,7 @@ class MaterialSeed {
         name: "Tomato Sauce",
         sku: "SCE-001",
         description: "Base sauce for pizza",
-        unitsOfMeasureId: 3, // Liter
+        unitOfMeasureId: 3, // Liter
         categoryId: 5, // Sauce
         brandId: 3, // Heinz
       },
@@ -35,7 +35,7 @@ class MaterialSeed {
         name: "Olive Oil",
         sku: "OIL-001",
         description: "Used in dough and sauce",
-        unitsOfMeasureId: 3, // Liter
+        unitOfMeasureId: 3, // Liter
         categoryId: 11, // Oils
         brandId: 4, // Borges
       },
@@ -44,7 +44,7 @@ class MaterialSeed {
         name: "Dry Yeast",
         sku: "YST-001",
         description: "Leavening agent for pizza dough",
-        unitsOfMeasureId: 2, // Gram
+        unitOfMeasureId: 2, // Gram
         categoryId: 10, // Additives
         brandId: 5, // Weikfield
       },
@@ -53,7 +53,7 @@ class MaterialSeed {
         name: "Sugar",
         sku: "SGR-001",
         description: "Used in dough and sauce",
-        unitsOfMeasureId: 2, // Gram
+        unitOfMeasureId: 2, // Gram
         categoryId: 10, // Additives
         brandId: 6, // Dhampure
       },
@@ -62,7 +62,7 @@ class MaterialSeed {
         name: "Salt",
         sku: "SLT-001",
         description: "Flavor enhancer",
-        unitsOfMeasureId: 2, // Gram
+        unitOfMeasureId: 2, // Gram
         categoryId: 10, // Additives
         brandId: 7, // Catch
       },
@@ -71,7 +71,7 @@ class MaterialSeed {
         name: "Water",
         sku: "WTR-001",
         description: "Used for dough mixing",
-        unitsOfMeasureId: 3, // Liter
+        unitOfMeasureId: 3, // Liter
         categoryId: 12, // Liquids
         brandId: 8, // Bisleri
       },
@@ -80,7 +80,7 @@ class MaterialSeed {
         name: "Bell Pepper",
         sku: "VEG-001",
         description: "Topping for pizzas",
-        unitsOfMeasureId: 1, // Kilogram
+        unitOfMeasureId: 1, // Kilogram
         categoryId: 7, // Vegetables
         brandId: 9, // Fresho
       },
@@ -89,7 +89,7 @@ class MaterialSeed {
         name: "Pepperoni",
         sku: "MTP-001",
         description: "Meat topping for pizzas",
-        unitsOfMeasureId: 1, // Kilogram
+        unitOfMeasureId: 1, // Kilogram
         categoryId: 8, // Meat
         brandId: 10, // Licious
       },
@@ -98,7 +98,7 @@ class MaterialSeed {
         name: "Oregano",
         sku: "HRB-001",
         description: "Dried herb seasoning",
-        unitsOfMeasureId: 2, // Gram
+        unitOfMeasureId: 2, // Gram
         categoryId: 9, // Herbs
         brandId: 11, // Keya
       },
