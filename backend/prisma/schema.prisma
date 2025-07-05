@@ -43,6 +43,8 @@ model UnitOfMeasure {
     createdAt    DateTime   @default(now())
     updatedAt    DateTime?  @updatedAt
     deletedAt    DateTime?
+    // packagingUnits     PackagingType[] @relation("PackagingUnit")
+    // packagingBaseUnits PackagingType[] @relation("PackagingBaseUnit")
 }
 
 model MaterialCategory {
@@ -105,3 +107,24 @@ model Inventory {
 
     @@unique([materialId, locationId])
 }
+
+model UnitType {
+    id          Int       @id @default(autoincrement())
+    name        String    @unique
+    description String?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime?
+    deletedAt   DateTime?
+}
+
+// model PackagingType {
+//     id                  Int           @id @default(autoincrement())
+//     name                String        @unique
+//     unitType            String
+//     size                Float
+//     unitOfMeasureId     Int
+//     unitOfMeasure       UnitOfMeasure @relation("PackagingUnit", fields: [unitOfMeasureId], references: [id])
+//     baseUnitOfMeasureId Int
+//     baseUnitOfMeasure   UnitOfMeasure @relation("PackagingBaseUnit", fields: [baseUnitOfMeasureId], references: [id])
+//     conversionFactor    Float
+// }

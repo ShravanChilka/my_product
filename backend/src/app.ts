@@ -11,6 +11,7 @@ import MaterialRoutes from "./modules/material/material.routes";
 import LocationRoutes from "./modules/location/location.routes";
 import InventoryRoutes from "./modules/inventory/inventory.routes";
 import UnitOfMeasureRoutes from "./modules/unit_of_measure/unit_of_measure.routes";
+import UnitTypeRoutes from "./modules/unit_type/unit_type.routes";
 
 class App {
   private application: Application;
@@ -56,6 +57,10 @@ class App {
     this.application.use(
       "/api/inventory",
       container.resolve(InventoryRoutes).router
+    );
+    this.application.use(
+      "/api/unit_type",
+      container.resolve(UnitTypeRoutes).router
     );
   }
 
