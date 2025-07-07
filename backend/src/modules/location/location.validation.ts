@@ -4,16 +4,44 @@ import { LocationType } from "@prisma/client";
 export default class LocationValidation {
   static createBody = z.object({
     name: z.string().trim().min(3).max(100),
-    address: z.string().trim().min(3).max(300),
     type: z.nativeEnum(LocationType).optional(),
-    parentId: z.number().int().optional(),
+    parentId: z.number().positive().optional(),
+    address: z.object({
+      country: z.string().trim().min(3).max(100),
+      countryCode: z.string().trim().min(3).max(100),
+      state: z.string().trim().min(3).max(100),
+      city: z.string().trim().min(3).max(100),
+      area: z.string().trim().min(3).max(100).optional(),
+      postalCode: z.string().trim().min(6).max(6).optional(),
+    }),
+    geo: z
+      .object({
+        latitude: z.number().optional(),
+        longitude: z.number().optional(),
+      })
+      .optional(),
   });
 
   static updateBody = z.object({
     name: z.string().trim().min(3).max(100).optional(),
-    address: z.string().trim().min(3).max(300).optional(),
     type: z.nativeEnum(LocationType).optional(),
-    parentId: z.number().int().optional(),
+    parentId: z.number().positive().optional(),
+    address: z
+      .object({
+        country: z.string().trim().min(3).max(100),
+        countryCode: z.string().trim().min(3).max(100),
+        state: z.string().trim().min(3).max(100),
+        city: z.string().trim().min(3).max(100),
+        area: z.string().trim().min(3).max(100).optional(),
+        postalCode: z.string().trim().min(6).max(6).optional(),
+      })
+      .optional(),
+    geo: z
+      .object({
+        latitude: z.number().optional(),
+        longitude: z.number().optional(),
+      })
+      .optional(),
   });
 
   static updateParam = z.object({
@@ -27,6 +55,7 @@ export default class LocationValidation {
     type: z.nativeEnum(LocationType).optional(),
     parentId: z.coerce.number().int().optional(),
     parent: z.union([z.literal("true"), z.literal("false")]).optional(),
+    address: z.union([z.literal("true"), z.literal("false")]).optional(),
   });
 
   static getByIdParam = z.object({

@@ -1,4 +1,4 @@
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import {
   LocationCreateBody,
   LocationGetByIdParam,
@@ -9,34 +9,43 @@ import {
 import prisma from "../../core/prisma_client";
 import { LocationType, Prisma } from "@prisma/client";
 import { parseBoolean } from "../../utils/parse_boolean";
+import AddressService from "../address/address.service";
 
 @injectable()
 export default class LocationService {
+  private service: AddressService;
+
+  constructor(@inject(AddressService) service: AddressService) {
+    this.service = service;
+  }
+
   create = async (body: LocationCreateBody) => {
     const location = await prisma.location.findFirst({
       where: {
-        name: {
-          equals: body.name,
-          mode: "insensitive",
-        },
+        name: { equals: body.name, mode: "insensitive" },
       },
     });
     if (location) {
       throw Error(`Location with the name ${body.name} already exists`);
     }
 
-    const tempCode = `TEMP-${Date.now()}`;
     const tempResult = await prisma.location.create({
-      data: { ...body, code: tempCode },
+      data: {
+        ...body,
+        ...body.geo,
+        code: `TEMP-${Date.now()}`,
+        ...(await this.service.create(body.address)),
+      },
     });
 
-    const code = this.generateCode({
-      id: tempResult.id,
-      type: body.type,
-    });
     const result = await prisma.location.update({
       where: { id: tempResult.id },
-      data: { code },
+      data: {
+        code: this.generateCode({
+          id: tempResult.id,
+          type: body.type,
+        }),
+      },
     });
     return result;
   };
@@ -44,10 +53,7 @@ export default class LocationService {
   update = async (param: LocationUpdateParam, body: LocationUpdateBody) => {
     const duplicate = await prisma.location.findFirst({
       where: {
-        name: {
-          equals: body.name,
-          mode: "insensitive",
-        },
+        name: { equals: body.name, mode: "insensitive" },
       },
     });
     if (duplicate) {
@@ -58,18 +64,16 @@ export default class LocationService {
     });
     if (!location) throw Error(`Location with id ${param.id} not found!`);
 
-    var code: string | undefined = undefined;
-
-    if (body.type != null) {
-      code = this.generateCode({
-        type: body.type,
-        id: location.id,
-      });
-    }
-
     const result = await prisma.location.update({
       where: { id: Number(param.id) },
-      data: { ...body, code },
+      data: {
+        ...body,
+        code:
+          body.type != null
+            ? this.generateCode({ type: body.type, id: location.id })
+            : undefined,
+        ...(await this.service.upsert(body.address)),
+      },
     });
     return result;
   };
@@ -82,49 +86,23 @@ export default class LocationService {
       OR:
         query.q != null
           ? [
-              {
-                name: { contains: query.q, mode: "insensitive" },
-              },
-              {
-                code: {
-                  contains: query.q,
-                  mode: "insensitive",
-                },
-              },
-              {
-                address: {
-                  contains: query.q,
-                  mode: "insensitive",
-                },
-              },
+              { name: { contains: query.q, mode: "insensitive" } },
+              { code: { contains: query.q, mode: "insensitive" } },
             ]
           : undefined,
       parent:
         query.parentId != null
-          ? {
-              parentId: {
-                equals: Number(query.parentId),
-              },
-            }
+          ? { parentId: { equals: Number(query.parentId) } }
           : undefined,
-      type:
-        query.type != null
-          ? {
-              equals: query.type,
-            }
-          : undefined,
+      type: query.type != null ? { equals: query.type } : undefined,
     };
     const [items, total] = await Promise.all([
       prisma.location.findMany({
         where: where,
         skip: skip,
         take: perPage,
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          parent: parseBoolean(query.parent),
-        },
+        orderBy: { createdAt: "desc" },
+        include: { parent: parseBoolean(query.parent) },
       }),
       prisma.location.count({ where: where }),
     ]);

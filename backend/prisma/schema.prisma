@@ -40,28 +40,6 @@ model MaterialBrand {
     materials   Material[]
 }
 
-model Location {
-    id          Int          @id @default(autoincrement())
-    code        String       @unique
-    name        String       @unique
-    type        LocationType @default(warehouse)
-    address     String
-    parentId    Int?
-    parent      Location?    @relation("ParentChild", fields: [parentId], references: [id])
-    children    Location[]   @relation("ParentChild")
-    createdAt   DateTime     @default(now())
-    updatedAt   DateTime?    @updatedAt
-    deletedAt   DateTime?
-    inventories Inventory[]
-}
-
-enum LocationType {
-    warehouse
-    store
-    vendor
-    bin
-}
-
 model PackageType {
     id               Int               @id @default(autoincrement())
     name             String            @unique
@@ -151,4 +129,99 @@ model Inventory {
     deletedAt         DateTime?
 
     @@unique([materialPackageId, locationId])
+}
+
+model Location {
+    id   Int          @id @default(autoincrement())
+    code String       @unique
+    name String       @unique
+    type LocationType @default(warehouse)
+
+    // Hierarchy 
+    parentId Int?
+    parent   Location?  @relation("ParentChild", fields: [parentId], references: [id])
+    children Location[] @relation("ParentChild")
+
+    // Geographic Hierarchy 
+    countryId    Int
+    stateId      Int
+    cityId       Int
+    areaId       Int?
+    postalCodeId Int?
+
+    country    Country     @relation(fields: [countryId], references: [id])
+    state      State       @relation(fields: [stateId], references: [id])
+    city       City        @relation(fields: [cityId], references: [id])
+    area       Area?       @relation(fields: [areaId], references: [id])
+    postalCode PostalCode? @relation(fields: [postalCodeId], references: [id])
+
+    // Geo Coordinates
+    latitude  Float?
+    longitude Float?
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+    deletedAt DateTime?
+
+    inventories Inventory[]
+}
+
+enum LocationType {
+    warehouse
+    store
+    vendor
+    franchise
+    distributor
+    bin
+}
+
+model Country {
+    id        Int        @id @default(autoincrement())
+    name      String
+    code      String     @unique
+    states    State[]
+    locations Location[]
+}
+
+model State {
+    id        Int        @id @default(autoincrement())
+    name      String
+    countryId Int
+    country   Country    @relation(fields: [countryId], references: [id])
+    cities    City[]
+    locations Location[]
+
+    @@unique([countryId, name])
+}
+
+model City {
+    id        Int        @id @default(autoincrement())
+    name      String
+    stateId   Int
+    state     State      @relation(fields: [stateId], references: [id])
+    areas     Area[]
+    locations Location[]
+
+    @@unique([stateId, name])
+}
+
+model Area {
+    id          Int          @id @default(autoincrement())
+    name        String
+    cityId      Int
+    city        City         @relation(fields: [cityId], references: [id])
+    postalCodes PostalCode[]
+    locations   Location[]
+
+    @@unique([cityId, name])
+}
+
+model PostalCode {
+    id        Int        @id @default(autoincrement())
+    code      String
+    areaId    Int
+    area      Area       @relation(fields: [areaId], references: [id])
+    locations Location[]
+
+    @@unique([areaId, code])
 }

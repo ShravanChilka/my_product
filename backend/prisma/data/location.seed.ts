@@ -4,96 +4,145 @@ import { prisma } from "../seed";
 export default class LocationSeed {
   seed = async () => {
     const locations = [
-      // 🏢 Top-level warehouse
       {
         id: 1,
         code: "WAR-0001",
         name: "Mumbai Central Warehouse",
         type: "warehouse",
-        address: "Sewri, Mumbai",
-        parentId: null, // Root node
+        parentId: null,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 1,
+        postalCodeId: 1,
+        latitude: 18.9987,
+        longitude: 72.8605,
       },
-
-      // 🏪 Stores under Central Warehouse
       {
         id: 2,
         code: "STR-0002",
         name: "Mumbai Kitchen Store",
         type: "store",
-        address: "Worli, Mumbai",
-        parentId: 1, // Child of Central Warehouse
+        parentId: 1,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 2,
+        postalCodeId: 2,
+        latitude: 19.0176,
+        longitude: 72.8169,
       },
       {
         id: 3,
         code: "STR-0003",
         name: "Mumbai Delivery Store",
         type: "store",
-        address: "Dadar, Mumbai",
-        parentId: 1, // Child of Central Warehouse
+        parentId: 1,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 3,
+        postalCodeId: 3,
+        latitude: 19.0179,
+        longitude: 72.8441,
       },
-
-      // 🧑‍🌾 Independent local vendors (top-level)
       {
         id: 4,
         code: "VEN-0004",
         name: "Mumbai Local Vendor A",
         type: "vendor",
-        address: "Crawford Market, Mumbai",
-        parentId: null, // Independent vendor
+        parentId: null,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 4,
+        postalCodeId: 4,
+        latitude: 18.9517,
+        longitude: 72.8332,
       },
       {
         id: 5,
         code: "VEN-0005",
         name: "Mumbai Local Vendor B",
         type: "vendor",
-        address: "Byculla Market, Mumbai",
-        parentId: null, // Independent vendor
+        parentId: null,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 5,
+        postalCodeId: 5,
+        latitude: 18.9766,
+        longitude: 72.8313,
       },
-
-      // 📦 Bins within Central Warehouse
       {
         id: 6,
         code: "BIN-0006",
         name: "Bin A - Ingredients",
         type: "bin",
-        address: "Section A - Central Warehouse",
-        parentId: 1, // Bin inside WAR-0001
+        parentId: 1,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 1,
+        postalCodeId: 1,
+        latitude: 18.9988,
+        longitude: 72.8606,
       },
       {
         id: 7,
         code: "BIN-0007",
         name: "Bin B - Packaging",
         type: "bin",
-        address: "Section B - Central Warehouse",
-        parentId: 1, // Bin inside WAR-0001
+        parentId: 1,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 1,
+        postalCodeId: 1,
+        latitude: 18.9989,
+        longitude: 72.8607,
       },
-
-      // 🧊 Separate cold storage warehouse
       {
         id: 8,
         code: "WAR-0008",
         name: "Mumbai Cold Storage",
         type: "warehouse",
-        address: "Taloja, Mumbai",
-        parentId: null, // Independent warehouse
+        parentId: null,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 6,
+        postalCodeId: 6,
+        latitude: 19.061,
+        longitude: 73.1425,
       },
-
-      // ❄️ Bins inside Cold Storage
       {
         id: 9,
         code: "BIN-0009",
         name: "Bin C - Dairy",
         type: "bin",
-        address: "Cold Storage - Dairy Zone",
-        parentId: 8, // Bin inside WAR-0008
+        parentId: 8,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 6,
+        postalCodeId: 6,
+        latitude: 19.0611,
+        longitude: 73.1426,
       },
       {
         id: 10,
         code: "BIN-0010",
         name: "Bin D - Meat",
         type: "bin",
-        address: "Cold Storage - Meat Zone",
-        parentId: 8, // Bin inside WAR-0008
+        parentId: 8,
+        countryId: 1,
+        stateId: 1,
+        cityId: 1,
+        areaId: 6,
+        postalCodeId: 6,
+        latitude: 19.0612,
+        longitude: 73.1427,
       },
     ];
 
